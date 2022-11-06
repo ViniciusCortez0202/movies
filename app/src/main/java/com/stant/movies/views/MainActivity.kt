@@ -6,9 +6,13 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.stant.movies.data.RetrofitConnection
+import com.stant.movies.data.repositories.GenresRepositoryImpl
 import com.stant.movies.data.repositories.MoviesRepositoryImpl
+import com.stant.movies.model.GenresModel
 import com.stant.movies.model.MovieModel
 import com.stant.movies.usecases.*
+import com.stant.movies.usecases.genres.GenreParams
+import com.stant.movies.usecases.genres.Genres
 import com.stant.movies.utils.Status
 import views.R
 import java.lang.Exception
@@ -82,6 +86,24 @@ class MainActivity : AppCompatActivity() {
                 }
             })*/
 
+            var genreRepositoryImpl = GenresRepositoryImpl(connection, GenresModel())
+            val details = Genres(genreRepositoryImpl)
+            details.call(GenreParams( "pt-BR")).observe(this, Observer {
+                it?.let {
+                    resource ->
+                    when(resource.status) {
+                        Status.SUCCESS -> {
+                            view.text = resource.data?.first()?.name
+                        }
+                        Status.ERROR -> {
+                            view.text = "erro"
+                        }
+                        Status.LOADING -> {
+                            view.text = "carregando"
+                        }
+                    }
+                }
+            })
         } catch (e: Exception){
             println(e.message)
         }
