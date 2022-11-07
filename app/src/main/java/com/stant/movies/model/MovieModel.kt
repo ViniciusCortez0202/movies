@@ -16,4 +16,17 @@ class MovieModel{
         return movies
     }
 
+    fun jsonFromDetails(json: JsonObject) : MovieEntity {
+        val gson = Gson()
+        var movie:MovieEntity = gson.fromJson(json, MovieEntity::class.java)
+        var listGenres = mutableListOf<String>()
+        json.get("genres")?.asJsonArray?.iterator()?.forEach {
+            listGenres.add(it.asJsonObject.get("name").asString)
+        }
+        movie.genresNames = listGenres.joinToString{" ,"; it}
+        movie.logoCompany = json.get("production_companies")?.asJsonArray?.get(0)?.asJsonObject?.get("logo_path")!!.asString
+        movie.nameCompany = json.get("production_companies")?.asJsonArray?.get(0)?.asJsonObject?.get("name")!!.asString
+        return movie
+    }
+
 }
