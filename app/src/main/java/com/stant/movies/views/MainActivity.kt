@@ -1,9 +1,10 @@
 package com.stant.movies.views
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
@@ -46,9 +47,50 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        setSupportActionBar(findViewById(R.id.toolbar))
+        title = "Filmes"
         getGenres()
         listInit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.search, menu)
+        val searchItem = menu?.findItem(R.id.search)
+        val searchView = searchItem?.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(search: String?): Boolean {
+                searchPage(search)
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return true
+            }
+
+        })
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun searchPage(search: String?){
+        if(search != null){
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra("query", search)
+            startActivity(intent)
+        }
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.search -> {
+            // User chose the "Settings" item, show the app settings UI...
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
     private fun listInit(){
@@ -84,9 +126,10 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setOnClickItemListView(listView: ListView){
-        listView.setOnItemClickListener { p0, p1, p2, p3 ->
+        listView.setOnItemClickListener { p0, p1, position, p3 ->
             val intent = Intent(this, DetailsActivity::class.java)
-            intent.putExtra("id", moviesData[p2].id)
+            intent.putExtra("id", moviesData[position].id)
+            intent.putExtra("name", moviesData[position].titleFromLanguage)
             startActivity(intent)
         }
     }

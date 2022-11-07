@@ -4,17 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF0000"
     tools:context="com.stant.movies.views.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:titleTextColor="#000"
+        android:background="#ffdb58"
+        android:elevation="4dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/movies_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/movies_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="416dp"
+        android:layout_height="661dp"
+        android:layout_marginTop="68dp"
         android:background="#fff"
-        tools:layout_editor_absoluteX="170dp"
-        tools:layout_editor_absoluteY="189dp">
-    </ListView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/indicator"
