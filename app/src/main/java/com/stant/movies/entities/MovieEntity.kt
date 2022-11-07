@@ -17,4 +17,6 @@ data class MovieEntity (
     var img: String,
     @SerializedName("release_date")
     var releaseDate: String,
+    @SerializedName("genre_ids")
+    var genres: List<Int>,
 )
