@@ -12,7 +12,7 @@ interface MoviesRepository {
     suspend fun get(@Query("api_key") apiKey: String, @Query("language") language: String, @Query("page") page: Int): JsonObject
 
     @GET("/3/movie/{movie_id}")
-    suspend fun getDetails(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String, @Query("language") language: String): MovieEntity
+    suspend fun getDetails(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String, @Query("language") language: String): JsonObject
 
     @GET("/3/search/movie")
     suspend fun search(@Query("api_key") apiKey: String, @Query("language") language: String, @Query("page") page: Int, @Query("query") query: String): JsonObject

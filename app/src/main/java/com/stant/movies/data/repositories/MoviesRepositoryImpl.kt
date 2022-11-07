@@ -49,13 +49,13 @@ class MoviesRepositoryImpl(
         try {
             val connection = connection.connect()
             val repository = connection.create(MoviesRepository::class.java)
-            var result = repository.getDetails(
+            var json = repository.getDetails(
                 idMovie,
                 "f321a808e68611f41312aa8408531476",
                 language,
             )
 
-            return result
+            return movieModel.jsonFromDetails(json)
         } catch (e: Exception){
             throw e
         }

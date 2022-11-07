@@ -1,17 +1,12 @@
 package com.stant.movies.views
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.AbsListView
-import android.widget.ListView
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.core.view.marginBottom
+import android.widget.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
-import com.stant.movies.data.Connection
 import com.stant.movies.data.RetrofitConnection
 import com.stant.movies.data.repositories.GenresRepositoryImpl
 import com.stant.movies.data.repositories.MoviesRepositoryImpl
@@ -22,11 +17,9 @@ import com.stant.movies.model.MovieModel
 import com.stant.movies.usecases.*
 import com.stant.movies.usecases.genres.GenreParams
 import com.stant.movies.usecases.genres.Genres
-import com.stant.movies.utils.Resource
 import com.stant.movies.utils.Status
 import com.stant.movies.views.adapters.MoviesAdapter
 import views.R
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         var listView = findViewById<ListView>(R.id.movies_list)
         listView.adapter = adapter
         setOnScrolListening(listView)
+        setOnClickItemListView(listView)
     }
 
     private fun setOnScrolListening(listView: ListView){
@@ -88,6 +82,14 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+
+    private fun setOnClickItemListView(listView: ListView){
+        listView.setOnItemClickListener { p0, p1, p2, p3 ->
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra("id", moviesData[p2].id)
+            startActivity(intent)
+        }
+    }
 
     fun getListMovies(){
         getList.call(GetlistParams( "pt-BR", pageListMoviesControl)).observe(this, Observer {

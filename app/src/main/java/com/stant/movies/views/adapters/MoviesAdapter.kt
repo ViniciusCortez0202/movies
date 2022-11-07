@@ -52,7 +52,6 @@ class MoviesAdapter(context: Context, movies: MutableList<MovieEntity>, genres: 
 
         nameView.text = movies[position].titleFromLanguage
         dateReleaseView.text = movies[position].releaseDate
-        println(genres.filter { movies[position].genres.contains(it.id) })
         genresView.text = (genres.filter { movies[position].genres.contains(it.id) }).joinToString { ", "; it.name }
         imgView.setImageURI(Uri.parse("https://image.tmdb.org/t/p/original${movies[position].img}"))
 
