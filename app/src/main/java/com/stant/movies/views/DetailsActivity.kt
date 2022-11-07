@@ -45,8 +45,18 @@ class DetailsActivity(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         var id = intent.getIntExtra("id", 0)
+        var name = intent.getStringExtra("name")
+        title = name
         getDetails(id)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun getDetails(id: Int){
