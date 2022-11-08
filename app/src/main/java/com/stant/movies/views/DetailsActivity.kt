@@ -1,11 +1,15 @@
 package com.stant.movies.views
 
+import android.icu.util.LocaleData
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
+import com.squareup.picasso.Picasso
 import com.stant.movies.data.RetrofitConnection
 import com.stant.movies.data.repositories.GenresRepositoryImpl
 import com.stant.movies.data.repositories.MoviesRepositoryImpl
@@ -19,9 +23,16 @@ import com.stant.movies.usecases.Getlist
 import com.stant.movies.usecases.Search
 import com.stant.movies.usecases.genres.GenreParams
 import com.stant.movies.usecases.genres.Genres
+import com.stant.movies.utils.DateFormat
 import com.stant.movies.utils.Status
 import com.stant.movies.views.adapters.MoviesAdapter
 import views.R
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class DetailsActivity(
 
@@ -89,15 +100,14 @@ class DetailsActivity(
         val movieNameView = findViewById<TextView>(R.id.name_movie_details)
         val overviewView = findViewById<TextView>(R.id.overview)
 
-
-        imgView.setImageURI(Uri.parse("https://image.tmdb.org/t/p/original${movie.img}"))
-        imgCompanyView.setImageURI(Uri.parse("https://image.tmdb.org/t/p/original${movie.logoCompany}"))
+        Picasso.get().load("https://image.tmdb.org/t/p/original${movie.img}").into(imgView)
+        Picasso.get().load("https://image.tmdb.org/t/p/original${movie.logoCompany}").into(imgCompanyView)
 
         rateView.text = movie.popularity.toString()
-        dateReleaseView.text = movie.releaseDate
+        dateReleaseView.text = DateFormat.getDateInAnotherFormat("yyyy-MM-dd", "dd/MM/yyyy", movie.releaseDate)
         genresAndLanguageView.text = "${movie.genresNames}\n\nIdioma original: ${movie.language}"
         companyNameView.text = movie.nameCompany
-        movieNameView.text = movie.title
+        movieNameView.text = movie.titleFromLanguage
         overviewView.text = movie.overView
     }
 }

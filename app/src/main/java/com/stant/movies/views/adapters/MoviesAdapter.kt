@@ -1,6 +1,7 @@
 package com.stant.movies.views.adapters
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import com.stant.movies.entities.GenresEntity
 import com.stant.movies.entities.MovieEntity
-import com.stant.movies.usecases.genres.Genres
-import com.stant.movies.utils.Resource
-import com.stant.movies.utils.Status
+import com.stant.movies.utils.DateFormat
 import views.R
+import java.net.URL
 
 
 class MoviesAdapter(context: Context, movies: MutableList<MovieEntity>, genres: List<GenresEntity>) : BaseAdapter() {
@@ -51,11 +52,10 @@ class MoviesAdapter(context: Context, movies: MutableList<MovieEntity>, genres: 
         val genresView = rowMovie.findViewById<TextView>(R.id.genresRow)
 
         nameView.text = movies[position].titleFromLanguage
-        dateReleaseView.text = movies[position].releaseDate
+        dateReleaseView.text = DateFormat.getDateInAnotherFormat("yyyy-MM-dd", "dd/MM/yyyy", movies[position].releaseDate)
         genresView.text = (genres.filter { movies[position].genres.contains(it.id) }).joinToString { ", "; it.name }
-        imgView.setImageURI(Uri.parse("https://image.tmdb.org/t/p/original${movies[position].img}"))
+        Picasso.get().load("https://image.tmdb.org/t/p/original${movies[position].img}").into(imgView)
 
         return rowMovie
     }
-
 }
