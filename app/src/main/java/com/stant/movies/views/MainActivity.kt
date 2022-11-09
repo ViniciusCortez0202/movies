@@ -80,19 +80,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.search -> {
-            // User chose the "Settings" item, show the app settings UI...
-            true
-        }
-        else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun listInit(){
         var listView = findViewById<ListView>(R.id.movies_list)
         listView.adapter = adapter

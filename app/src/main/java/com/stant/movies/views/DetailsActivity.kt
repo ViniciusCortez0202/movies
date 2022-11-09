@@ -1,13 +1,19 @@
 package com.stant.movies.views
 
+import android.content.Intent
 import android.icu.util.LocaleData
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import com.squareup.picasso.Picasso
 import com.stant.movies.data.RetrofitConnection
@@ -43,6 +49,7 @@ class DetailsActivity(
     private var genreRepositoryImpl: GenresRepositoryImpl
     private var details: Details
     private val genres: Genres
+    private val progressIndicator: ProgressIndicator
 
     init {
         connection = RetrofitConnection()
@@ -50,7 +57,7 @@ class DetailsActivity(
         genreRepositoryImpl = GenresRepositoryImpl(connection, GenresModel())
         details = Details(moviesRepositoryImpl)
         genres = Genres(genreRepositoryImpl)
-
+        progressIndicator = ProgressIndicator(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +65,8 @@ class DetailsActivity(
         setContentView(R.layout.activity_details)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        progressIndicator.startLoading()
+        setVisible(false)
         var id = intent.getIntExtra("id", 0)
         var name = intent.getStringExtra("name")
         title = name
@@ -77,12 +85,16 @@ class DetailsActivity(
                 Status.SUCCESS -> {
                     val movie: MovieEntity = resource.data!!
                     seValues(movie)
+
+                    findViewById<ConstraintLayout>(R.id.details).visibility = View.VISIBLE
+                    progressIndicator.close()
                 }
                 Status.ERROR -> {
-                    println("erro")
+
                 }
                 Status.LOADING -> {
-                    println("carregando")
+
+
                 }
             }
             }
